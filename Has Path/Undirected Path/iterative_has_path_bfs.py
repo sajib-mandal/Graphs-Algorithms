@@ -1,36 +1,25 @@
 from collections import deque
-
 def undirected_path(edges, node_A, node_B):
     # create helper function to convert "edges_list --> adjacency_list
     graph = build_graph(edges)
-    return has_path(graph, node_A, node_B)  # set gives me O(1) lookup and O(1) insertion
+    return has_path(graph, node_A, node_B, set())  # set gives me O(1) lookup and O(1) insertion
 
 
-def has_path(graph, src, dst):
-    """if src == dst:
-        return True
-
-    if src in visited:
-        return False
-    visited.add(src)
-    for neighbor in graph[src]:
-        if has_path(graph, neighbor, dst, visited) == True:
-            return True
-    return False """
-
+def has_path(graph, src, dst, visited):
     queue = deque([src])
-    while len(queue) >= 0:
+
+    while queue:
         current = queue[0]
         node = queue.popleft()
-
         if node == dst:
             return True
+        if node in visited:
+            return False
+        queue.append(node)
 
         for neighbor in graph[current]:
             queue.append(neighbor)
     return False
-
-
 
 
 def build_graph(edges):
